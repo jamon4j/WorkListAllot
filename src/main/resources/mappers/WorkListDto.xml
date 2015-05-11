@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.zjj.checkworklist.dto.WorkListDto" >
+  <resultMap id="BaseResultMap" type="cn.zjj.checkworklist.dto.WorkListDto" >
+    <id column="Stream_Number" jdbcType="VARCHAR" property="stream_Number" />
+    <result column="New_Order" jdbcType="INTEGER" property="new_Order" />
+    <result column="Task_ID" jdbcType="VARCHAR" property="task_ID" />
+    <result column="Customer_Phone" jdbcType="VARCHAR" property="customer_Phone" />
+    <result column="End_Time" jdbcType="INTEGER" property="end_Time" />
+    <result column="Duration_Type" jdbcType="INTEGER" property="duration_Type" />
+    <result column="Is_Success" jdbcType="INTEGER" property="is_Success" />
+    <result column="Checked" jdbcType="INTEGER" property="checked" />
+  </resultMap>
+
+  <sql id="Base_Column_List" >
+    Stream_number,New_Order,Task_ID,Customer_Phone,End_Time,Duration_Type,Is_Success,Checked
+  </sql>
+
+ <select id="selectUncheckWorkList" resultMap="BaseResultMap" parameterType="map" >
+  select <include refid="Base_Column_List" />
+  from crm_Cati_Uncheck 
+  <where> 
+	  Task_ID = ${Task_ID} 
+	  and Is_Success = ${Is_Success} and Duration_Type = ${Duration_Type}
+	  and Mod(New_order,${Checker_num}*2) in (${Remainder})
+  </where>
+ </select>
+
+</mapper>
